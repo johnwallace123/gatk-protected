@@ -35,6 +35,7 @@ import org.broadinstitute.gatk.utils.contexts.ReferenceContext;
 import org.broadinstitute.gatk.utils.refdata.RefMetaDataTracker;
 import org.broadinstitute.gatk.engine.walkers.Reference;
 import org.broadinstitute.gatk.engine.walkers.RodWalker;
+import org.broadinstitute.gatk.engine.walkers.TreeReducible;
 import org.broadinstitute.gatk.engine.walkers.Window;
 import org.broadinstitute.gatk.utils.GenomeLoc;
 import org.broadinstitute.gatk.engine.SampleUtils;
@@ -83,7 +84,7 @@ import java.util.*;
  */
 @DocumentedGATKFeature( groupName = HelpConstants.DOCS_CAT_VARMANIP, extraDocs = {CommandLineGATK.class} )
 @Reference(window=@Window(start=-50,stop=50))
-public class VariantFiltration extends RodWalker<Integer, Integer> {
+public class VariantFiltration extends RodWalker<Integer, Integer> implements TreeReducible<Integer> {
 
     @ArgumentCollection
     protected StandardVariantContextInputArgumentCollection variantCollection = new StandardVariantContextInputArgumentCollection();
@@ -445,6 +446,10 @@ public class VariantFiltration extends RodWalker<Integer, Integer> {
         return sum + value;
     }
 
+    public Integer treeReduce(Integer value, Integer sum) {
+    	return sum + value;
+    }
+    
     /**
      * Tell the user the number of loci processed and close out the new variants file.
      *
